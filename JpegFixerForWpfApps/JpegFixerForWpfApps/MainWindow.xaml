@@ -1,0 +1,20 @@
+﻿<Window x:Class="JpegFixerForWpfApps.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JpegFixerForWpfApps"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBlock>Root Directory:</TextBlock>
+            <TextBox x:Name="TextBoxRootDir"></TextBox>
+            <TextBlock>Backup Directory:</TextBlock>
+            <TextBox x:Name="TextBoxBackupDir">c:\delme\backupJpeg</TextBox>
+            <ProgressBar x:Name="Progress" Visibility="Visible" IsIndeterminate="true" HorizontalAlignment="Stretch" Height="10" ></ProgressBar>
+            <TextBlock>STATUS HERE</TextBlock>
+            <TextBox x:Name="TextBoxLog" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="300"></TextBox>
+        </StackPanel>
+    </Grid>
+</Window>
