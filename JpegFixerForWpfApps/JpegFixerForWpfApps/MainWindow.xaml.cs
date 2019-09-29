@@ -24,5 +24,42 @@ namespace JpegFixerForWpfApps
         {
             InitializeComponent();
         }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Progress.IsIndeterminate = true;
+                ButtonStart.IsEnabled = false;
+                DoConversionBody();
+            }
+            finally
+            {
+                Progress.IsIndeterminate = false;
+                ButtonStart.IsEnabled = true;
+            }
+        }
+
+        private void DoConversionBody()
+        {
+
+
+
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TextBoxRootDir.Text = Properties.Settings.Default.RootDir??"";
+            TextBoxBackupDir.Text = Properties.Settings.Default.BackupDir ?? "";
+            Progress.IsIndeterminate = false;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.RootDir = TextBoxRootDir.Text;
+            Properties.Settings.Default.BackupDir = TextBoxBackupDir.Text;
+            Properties.Settings.Default.Save();
+        }
     }
 }
