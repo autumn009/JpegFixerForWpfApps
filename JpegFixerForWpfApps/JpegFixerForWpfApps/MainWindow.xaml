@@ -16,7 +16,7 @@
                 <Button x:Name="ButtonStart" Click="ButtonStart_Click">START</Button>
             </StackPanel>
             <ProgressBar x:Name="Progress" Visibility="Visible" IsIndeterminate="true" HorizontalAlignment="Stretch" Height="10" ></ProgressBar>
-            <TextBlock>STATUS HERE</TextBlock>
+            <TextBlock x:Name="TextBlockStatus">STATUS HERE</TextBlock>
             <TextBox x:Name="TextBoxLog" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="300"></TextBox>
         </StackPanel>
     </Grid>

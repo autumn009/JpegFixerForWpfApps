@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.Windows.Threading;
 
 namespace JpegFixerForWpfApps
 {
@@ -42,10 +44,56 @@ namespace JpegFixerForWpfApps
 
         private void DoConversionBody()
         {
+            var fullpaths = Directory.GetFiles(TextBoxRootDir.Text, "*.jpg", SearchOption.AllDirectories);
+            int skip = 0;
+            int done = 0;
+            foreach (var fullpath in fullpaths)
+            {
+                var image = MyImageUtil.CreateImage(fullpath);
+                if (image == null)
+                {
+                    skip++;
+                    updateStatus(skip, done, "working...");
+                    if ((skip % 10) == 1) DoEvents();
+                }
+                else
+                {
+                    DoOneFile(fullpath, image);
+                    done++;
+                    updateStatus(skip, done, "working...");
+                    DoEvents();
+                }
+            }
+            updateStatus(skip, done, "done!");
+            Console.Beep();
+        }
 
+        private void DoOneFile(string fullpath, BitmapImage image)
+        {
+            // TBW
+            addLog($"{fullpath} done");
+        }
 
+        private void addLog(string v)
+        {
+            TextBoxLog.Text += v + "\r\n";
+        }
 
+        private void updateStatus(int skip, int done, string additional)
+        {
+            TextBlockStatus.Text = $"Skip:{skip} Done:{done} {additional}";
+        }
 
+        private void DoEvents()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+            var callback = new DispatcherOperationCallback(obj =>
+            {
+                ((DispatcherFrame)obj).Continue = false;
+                return null;
+            });
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, callback, frame);
+            Dispatcher.PushFrame(frame);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
