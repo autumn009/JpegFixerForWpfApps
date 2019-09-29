@@ -44,6 +44,8 @@ namespace JpegFixerForWpfApps
 
         private void DoConversionBody()
         {
+            Directory.CreateDirectory(TextBoxBackupDir.Text);
+
             var fullpaths = Directory.GetFiles(TextBoxRootDir.Text, "*.jpg", SearchOption.AllDirectories);
             int skip = 0;
             int done = 0;
@@ -70,9 +72,33 @@ namespace JpegFixerForWpfApps
 
         private void DoOneFile(string fullpath, BitmapImage image)
         {
-            // TBW
-            addLog($"{fullpath} done");
+            // backup
+            int count = 0;
+            string dst;
+            for (; ; )
+            {
+                dst = System.IO.Path.Combine(TextBoxBackupDir.Text, System.IO.Path.GetFileNameWithoutExtension(fullpath) + " " + count.ToString() + ".jpg");
+                if (!File.Exists(dst)) break;
+                count++;
+            }
+            addLog($"{fullpath}=>{dst} copying");
+            DoEvents();
+            File.Copy(fullpath, dst);
+            addLog($"{fullpath} saving");
+            saveJpeg(fullpath, image);
         }
+
+        private void saveJpeg(string fullpath, BitmapImage image)
+        {
+            BitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(image));
+
+            using (var fileStream = new System.IO.FileStream(fullpath, System.IO.FileMode.Create))
+            {
+                encoder.Save(fileStream);
+            }
+        }
+
 
         private void addLog(string v)
         {
